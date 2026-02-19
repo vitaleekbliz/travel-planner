@@ -50,7 +50,7 @@ class ArticPlaceFetcher:
                 return {}
 
             total_pages = first_data.pagination.total_pages
-            self._logger.logger.error(f"Fetched first page successfully")
+            self._logger.logger.info(f"Fetched first page successfully")
             
             # 2. Create tasks for all remaining pages
             tasks = []
