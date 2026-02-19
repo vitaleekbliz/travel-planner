@@ -1,0 +1,3 @@
+fastapi
+pydantic
+pydantic_settings
