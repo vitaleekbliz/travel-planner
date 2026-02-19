@@ -8,7 +8,7 @@ router = APIRouter(prefix="/projects", tags=["Projects"])
 async def get_travel_manager()->TravelManager:
     return TravelManager()
 
-@router.post("/", response_model=ProjectResponse)
+@router.post("/")
 async def create_project(
     project_data: ProjectCreate, 
     response: Response,
@@ -18,14 +18,14 @@ async def create_project(
     project, warnings = await travel_manager.create_project(project_data)
     
     if warnings:
-        response.status_code = status.HTTP_207_MULTI_STATUS
+        response.status_code = status.HTTP_207_MULTI_STATUS 
         result_status = "partial_success"
     else:
         response.status_code = status.HTTP_201_CREATED
         result_status = "success"
 
     return {
-        "project": project,
+        "project": project.get_response_model(),
         "warnings": warnings,
         "status": result_status
     }
@@ -59,7 +59,7 @@ async def get_project(project_id: int, travel_manager: TravelManager = Depends(g
     Retrieves a single project by its ID.
     """
     try:
-        return travel_manager.get_project_by_id(project_id)
+        return travel_manager.get_project_by_id(project_id).get_response_model()
     except ProjectNotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 

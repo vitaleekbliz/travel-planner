@@ -28,7 +28,6 @@ class TravelProject():
             name=self._name,
             description=self._description,
             start_time=self._start_date,
-            #TODO debug the result
             places=[pl.get_response_model() for pl in self._project_places]
         )
         return model
@@ -85,47 +84,3 @@ class TravelProject():
                 return False
             
         return True
-
-#TODO remove debug
-if __name__ == "__main__":
-    print("--- Starting Debug Session ---")
-    
-    try:
-        # 1. Initialize Project
-        my_trip = TravelProject(
-            name="Summer Trip 2026", 
-            description="Europe backpacking", 
-            start_date=datetime(2026, 6, 1)
-        )
-        print(f"Project Created: {my_trip._name} (ID: {my_trip._id})")
-
-        # 2. Add Places
-        my_trip.add_place("Paris", id=101, note="Visit the Louvre")
-        my_trip.add_place("Berlin", id=102, note="Try Currywurst")
-        print(f"Added places. Current count: {len(my_trip._project_places)}")
-
-        # 3. Test Duplicate Error (Triggering Debug)
-        print("\nTesting DuplicatePlaceError...")
-        try:
-            my_trip.add_place("Fake Paris", id=101) # Duplicate ID
-        except DuplicatePlaceError as e:
-            print(f"Caught expected error: {e}")
-
-        # 4. Test Visited Logic & Deletability
-        print(f"\nIs project deletable? {my_trip.is_deletable()}")
-        
-        print("Marking Berlin as visited...")
-        my_trip.mark_place_visited(102)
-        
-        print(f"Is project deletable now? {my_trip.is_deletable()} (Expected: False)")
-
-        # 5. Test Missing Place Error
-        print("\nTesting PlaceNotFoundError...")
-        try:
-            my_trip.update_place(place_id=999, name="Nowhere")
-        except PlaceNotFoundError as e:
-            print(f"Caught expected error: {e}")
-
-    except Exception as e:
-        print(f"An unexpected system error occurred: {e}")
-        # This is where you'd look at travel_project.log for the AppLogger output

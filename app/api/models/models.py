@@ -1,7 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import List
+from typing import List, Annotated
+from annotated_types import MaxLen
 
 # --- Place Schemas ---
 class PlaceSchema(BaseModel):
@@ -27,7 +28,7 @@ class ProjectShema(BaseModel):
 
 class ProjectCreate(ProjectShema):
     # Allows creating project + places in one go
-    places: list[PlaceCreate] | None = Field(default=None, max_items=10)
+    places: Annotated[list[PlaceCreate], MaxLen(10)] = Field(default_factory=list)
 
 class ProjectUpdate(ProjectShema):
     id: int

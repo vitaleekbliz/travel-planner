@@ -92,6 +92,7 @@ class TravelManager:
         warnings = []
 
         # 1. Initialize the project
+        #TODO rewrite constructor to take in Model
         project = TravelProject(
             project_create.name,
             project_create.description,

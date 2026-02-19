@@ -95,11 +95,3 @@ class ArticPlaceFetcher:
         return None
         #raise PlaceNotFoundError(name)
         
-#TODO remove debug
-if __name__ == "__main__":
-    fetcher = ArticPlaceFetcher()
-    f = ArticPlaceFetcher()
-    # Using asyncio.run to start the event loop
-    all_places = asyncio.run(fetcher.fetch_all_places())
-    print(f"Successfully fetched {len(all_places)} places.")
-    #print(all_places.items())
