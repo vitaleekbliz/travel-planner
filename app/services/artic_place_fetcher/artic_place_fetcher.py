@@ -4,6 +4,7 @@ from typing import Dict
 from app.services.artic_place_fetcher.models.models import ArticResponse
 from app.core.logger.logger import AppLogger
 from app.services.artic_place_fetcher.errors.errors import *
+import random
 
 class ArticPlaceFetcher:
     _instance = None
@@ -27,6 +28,15 @@ class ArticPlaceFetcher:
 
         self._initialized = True
 
+    def get_random_place_name(self) -> str:
+        """For debug purposes: returns a random place name from the cache."""
+        if not self._places:
+            return "No places cached yet"
+
+        # random.choice works on sequences (lists/tuples)
+        # so we convert the dictionary values into a list first
+        return random.choice(list(self._places.values()))
+    
     async def fetch_all_places(self, limit: int = 100) -> Dict[int, str]:
         """Public method to orchestrate the full fetch."""
         self._logger.logger.info(f"Trying to fetch all places")
@@ -82,7 +92,8 @@ class ArticPlaceFetcher:
             if p_name == name:
                 return p_id
 
-        raise PlaceNotFoundError(name)
+        return None
+        #raise PlaceNotFoundError(name)
         
 #TODO remove debug
 if __name__ == "__main__":

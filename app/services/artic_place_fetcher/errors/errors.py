@@ -7,7 +7,7 @@ class ArricFetcherBaseError(Exception):
         self.message = message or "A arric fetcher error occurred."
         super().__init__(self.message)
 
-class PlaceNotFoundError(ArricFetcherBaseError):
+class ArticPlaceNotFoundError(ArricFetcherBaseError):
     """Raised when a specific artic place ID is not found."""
     def __init__(self, name: str):
         self.name = name
