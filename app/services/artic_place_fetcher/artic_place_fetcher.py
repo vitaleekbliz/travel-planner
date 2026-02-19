@@ -6,15 +6,26 @@ from app.core.logger.logger import AppLogger
 from app.services.artic_place_fetcher.errors.errors import *
 
 class ArticPlaceFetcher:
+    _instance = None
     _logger = AppLogger("ARTICFETCHER", "artic_fetcher.log")
 
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._logger.logger.info("Creating Singleton instance of ArticPlaceFetcher")
+            cls._instance = super(ArticPlaceFetcher, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+    
     #TODO get url from config
     def __init__(self, base_url: str = "https://api.artic.edu/api/v1/places"):
-        self._logger.logger.info(f"Initiated artic fetcher with url : {base_url}")
+        if self._initialized:
+            return
+        
+        self._logger.logger.info(f"Initialized artic fetcher with url : {base_url}")
         self.base_url = base_url
         self._places: Dict[int, str] = {}
 
-        self.fetch_all_places()
+        self._initialized = True
 
     async def fetch_all_places(self, limit: int = 100) -> Dict[int, str]:
         """Public method to orchestrate the full fetch."""
@@ -76,7 +87,8 @@ class ArticPlaceFetcher:
 #TODO remove debug
 if __name__ == "__main__":
     fetcher = ArticPlaceFetcher()
+    f = ArticPlaceFetcher()
     # Using asyncio.run to start the event loop
-    all_places = asyncio.run(fetcher.fetch_all_places(limit=100))
+    all_places = asyncio.run(fetcher.fetch_all_places())
     print(f"Successfully fetched {len(all_places)} places.")
-    print(all_places.items())
+    #print(all_places.items())

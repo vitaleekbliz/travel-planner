@@ -1,3 +1,4 @@
 fastapi
 pydantic
 pydantic_settings
+httpx

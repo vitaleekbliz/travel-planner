@@ -13,6 +13,12 @@ class PlaceNotFoundError(ProjectBaseError):
         self.project_id = project_id
         super().__init__(f"Project (id = {project_id}) place with ID '{place_id}' could not be found.")
 
+class ProjectNotFoundError(ProjectBaseError):
+    """Raised when a specific project ID is not found."""
+    def __init__(self, project_id: int):
+        self.project_id = project_id
+        super().__init__(f"Project with ID '{project_id}' could not be found.")
+
 class DuplicatePlaceError(ProjectBaseError):
     """Raised when trying to add a place that already exists."""
     def __init__(self, place_id: int, project_id: int):
